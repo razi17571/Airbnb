@@ -1,4 +1,4 @@
-<% layout('/layouts/boilerplate') %> 
+<% layout('/layouts/boilerplate') %>
 <body>
     <style>
         #filters {
@@ -11,10 +11,10 @@
             margin-right: 1rem;
             margin-top: 2rem;
             opacity: 0.7;
-            cursor: pointer;
         }
         .filter:hover {
             opacity: 1;
+            cursor: pointer;
         }
         .filter p {
             font-size: 0.8rem;
@@ -32,21 +32,20 @@
             margin-left: 6rem;
         }
     </style>
-
     <div id="filters">
-        <div class="filter" data-category="trending">
+        <div class="filter">
             <div><i class="fa-solid fa-fire"></i></div>
             <p>Trending</p> 
         </div>
-        <div class="filter" data-category="rooms">
+        <div class="filter">
             <div><i class="fa-solid fa-bed"></i></div>
             <p>Rooms</p> 
         </div>
-        <div class="filter" data-category="iconic-cities">
+        <div class="filter">
             <div><i class="fa-solid fa-mountain-city"></i></div>
             <p>Iconic cities</p> 
         </div>
-        <div class="filter" data-category="mountains">
+        <div class="filter">
             <div><i class="fa-solid fa-mountain"></i></div>
             <p>Mountains</p> 
         </div>
@@ -86,9 +85,11 @@
         </div>
     </div>
 
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1" id="listings">
-        <% for(let list of allListings) { %>
-            <a href="/listings/<%= list.id %>" class="list-link category-listing" data-category="<%= list.category %>">
+    <% if (searchResults.length > 0) { %>
+        <h2>Search Results</h2>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1" >
+        <% for(let list of searchResults) { %>
+            <a href="/listings/<%= list.id %>" class="list-link">
                 <div class="card col listing-card" >
                     <img src="<%= list.images.url %>" class="card-img-top" style="height: 20rem;" alt="listings-img">
                     <div class="card-img-overlay"></div>
@@ -102,25 +103,29 @@
             </a>
         <% } %>
     </div>
+    <% } else { %>
+        <p>No results found for your search query.</p>
+    <% } %>
 
+
+</body>
     <script>
         let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-        // Tax toggle functionality
         taxSwitch.addEventListener("click", () => {
             let taxInfo = document.getElementsByClassName("tax-info");
             let cards = document.querySelectorAll('.listing-card');
-
+            
             for (let i = 0; i < cards.length; i++) {
                 let priceElement = cards[i].querySelector('.price');
                 let originalPrice = priceElement.innerHTML;
                 let newPrice = 0;
-
+                
                 if (taxSwitch.checked) {
                     newPrice = parseInt(originalPrice) * 2; // Adding 18% tax
                 } else {
                     newPrice = originalPrice; // Original price without tax
                 }
-
+                
                 priceElement.innerText = newPrice;
             }
 
@@ -134,5 +139,3 @@
         });
     </script>
 </body>
-
-

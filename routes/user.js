@@ -4,6 +4,7 @@ const wrapAsync = require('../utils/wrapAsync');
 const passport = require('passport');
 const { saveRedirectUrl } = require('../middleware.js');
 const userController = require('../controllers/users.js');
+const {index} = require("../controllers/listings.js")
 
 
 // Sign Up Page Route and Create Route using router.route ↓
@@ -25,5 +26,8 @@ router
 
 // Log Out Get Route ↓
 router.get("/logout", userController.logout);
+
+
+router.get("/", index);
 
 module.exports = router;

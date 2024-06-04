@@ -17,8 +17,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user.js');
 
-
-// const Mongo_url = "mongodb://127.0.0.1:27017/Airbnb";
 const dbUrl = process.env.MONGO_URI;
 
 main()
@@ -66,10 +64,6 @@ const sessionOption = {
 };
 
 
-// Root Route ↓
-// app.get("/", (req, res) => {
-//     res.send("Hi, I Am Root 🙏");
-// });
 
 // Session, Connect-flash Middlewere ↓
 app.use(session( sessionOption ));
@@ -92,15 +86,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Demo Register
-// app.get("/demouser", async(req, res) => {
-//     let fuser = new User ({
-//         email: "suna@gmail.ocm",
-//         username: "sunax"
-//     });
-//     let regUser = await User.register(fuser, "helloworld");
-//     res.send(regUser);
-// });
 
 // Router Middle Ware ↓
 app.use("/listings", listingRouter);
