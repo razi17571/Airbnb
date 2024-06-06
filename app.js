@@ -7,15 +7,15 @@ const path = require('path');
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const ExError = require("./utils/ExError.js");
-const listingRouter = require('./routes/listing.js');
-const reviewRouter = require('./routes/review.js');
-const userRouter = require('./routes/user.js');
+const listingRouter = require('./routes/listingRoutes.js');
+const reviewRouter = require('./routes/reviewRoutes.js');
+const userRouter = require('./routes/userRoutes.js');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const User = require('./models/user.js');
+const User = require('./models/User.js');
 
 const dbUrl = process.env.MONGO_URI;
 

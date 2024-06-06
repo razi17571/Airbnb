@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const wrapAsync = require('../utils/wrapAsync');
+const wrapAsync = require('../utils/wrapAsync.js');
 const passport = require('passport');
 const { saveRedirectUrl } = require('../middleware.js');
-const userController = require('../controllers/users.js');
-const {index} = require("../controllers/listings.js")
+const userController = require('../controllers/userController.js');
+const {index} = require("../controllers/listingController.js")
 
 
 // Sign Up Page Route and Create Route using router.route ↓

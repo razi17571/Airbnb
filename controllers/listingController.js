@@ -1,4 +1,4 @@
-const Listing = require('../models/listing.js');
+const Listing = require('../models/Listing.js');
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -36,7 +36,7 @@ module.exports = {
     },
 
     renderNewForm: (req, res) => {
-        res.render("listings/new.ejs");
+        res.render("listings/addListing.ejs");
     },
 
     showListing: async (req, res) => {
@@ -49,7 +49,7 @@ module.exports = {
                 req.flash("error", "Listing you requested for does not exist!");
                 return res.redirect("/listings");
             }
-            res.render("listings/show.ejs", { listing });
+            res.render("listings/showListing.ejs", { listing });
         } catch (err) {
             console.error(err);
             res.status(500).send("Internal Server Error");
@@ -90,7 +90,7 @@ module.exports = {
             }
             let originalImageUrl = listing.images.url;
             originalImageUrl = originalImageUrl.replace("/upload", "/upload/c_scale,h_250,w_370/");
-            res.render("listings/edit.ejs", { listing, originalImageUrl });
+            res.render("listings/editListing.ejs", { listing, originalImageUrl });
         } catch (err) {
             console.error(err);
             res.status(500).send("Internal Server Error");

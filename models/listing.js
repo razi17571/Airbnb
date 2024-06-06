@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Review = require("./review.js");
+const Review = require("./Review.js");
 const { string } = require('joi');
 
 const listingSchema = new Schema({
@@ -12,7 +12,7 @@ const listingSchema = new Schema({
     images: [{
         url: String,
         filename: String,
-    }],
+    }], 
     price: Number,
     location: String,
     country: String,
@@ -37,7 +37,7 @@ const listingSchema = new Schema({
     },       
     category: {
         type: String,
-        enum: [""]
+        // enum: [""]
     }                       
 });
 

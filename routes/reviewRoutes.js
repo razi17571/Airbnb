@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true});
 const wrapAsync = require('../utils/wrapAsync.js');
 const { validateReview, isLoggedIn, isReviewAuthor } = require("../middleware.js");
-const reviewController = require('../controllers/reviews.js')
+const reviewController = require('../controllers/reviewController.js')
 
 // Reviews Post Route ↓
 router.post("/:listingId/reviews", isLoggedIn, validateReview, wrapAsync(reviewController.createReview));

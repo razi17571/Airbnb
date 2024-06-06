@@ -1,4 +1,4 @@
-const User = require("../models/user.js");
+const User = require("../models/User.js");
 
 module.exports = {
     renderSignupForm: (req, res) => {
@@ -8,6 +8,18 @@ module.exports = {
     signup: async (req, res) => {
         try {
             let { username, email, password } = req.body;
+    
+            // Check if a user with the same email or username already exists
+            let existingUser = await User.findOne({ $or: [{ email: email }, { username: username }] });
+            if (existingUser) {
+                if (existingUser.username === username) {
+                    req.flash("error", "Username already exists");
+                } else {
+                    req.flash("error", "Email already exists");
+                }
+                return res.redirect("/signup");
+            }
+    
             let newUser = new User({ email, username });
             const registerUser = await User.register(newUser, password);
             console.log(registerUser);
