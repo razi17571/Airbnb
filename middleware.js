@@ -1,5 +1,5 @@
-const Listing = require('./models/Listing.js');
 const Review = require('./models/Review.js');
+const Listing = require('./models/Listings.js');
 const { listingSchema, reviewSchema } = require('./schema.js');
 const ExError = require('./utils/ExError.js');
 
@@ -11,7 +11,7 @@ module.exports.saveRedirectUrl = (req, res, next) => {
     next();
 };
 
-// Log in chacked Middleware ↓ (routes -> listing.js)
+// Log in chacked Middleware ↓ (routes -> Listings.js)
 module.exports.isLoggedIn = (req, res, next) => {
     // console.log(req.path, "...", req.originalUrl);
     if (!req.isAuthenticated()) {
@@ -22,7 +22,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 };
 
-// Owner chacked Middleware ↓ (routes -> listing.js)
+// Owner chacked Middleware ↓ (routes -> Listings.js)
 module.exports.isOwner = async (req, res, next) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -33,7 +33,7 @@ module.exports.isOwner = async (req, res, next) => {
     next()
 };
 
-// Listings Backend (Database) Error Handling Middleware ↓ (routes -> listing.js)
+// Listings Backend (Database) Error Handling Middleware ↓ (routes -> Listings.js)
 module.exports.validateListing = ((req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error) {
