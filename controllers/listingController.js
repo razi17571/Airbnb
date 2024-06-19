@@ -30,8 +30,9 @@ module.exports = {
             const allListings = await Listing.find(filter);
             res.render("listings/index.ejs", { allListings });
         } catch (err) {
-            console.error(err);
-            res.status(500).send("Internal Server Error");
+            console.error("Error fetching all listings:", err);
+            req.flash("error", "An error occurred while fetching listings.");
+            res.redirect("/listings");
         }
     },
 
@@ -46,13 +47,14 @@ module.exports = {
                 .populate({ path: "reviews", populate: { path: "author" } })
                 .populate("owner");
             if (!listing) {
-                req.flash("error", "Listing you requested for does not exist!");
+                req.flash("error", "Listing not found!");
                 return res.redirect("/listings");
             }
             res.render("listings/showListing.ejs", { listing });
         } catch (err) {
-            console.error(err);
-            res.status(500).send("Internal Server Error");
+            console.error("Error fetching listing:", err);
+            req.flash("error", "An error occurred while fetching the listing.");
+            res.redirect("/listings");
         }
     },
 
@@ -69,13 +71,12 @@ module.exports = {
             newListing.owner = req.user._id;
             newListing.image = { url, filename };
             newListing.geometry = response.body.features[0].geometry;
-            const geoData = await newListing.save();
-            console.log(geoData);
+            await newListing.save();
             req.flash("success", "New listing created!");
             res.redirect("/listings");
         } catch (err) {
-            console.error(err);
-            req.flash("error", "Failed to create new listing!");
+            console.error("Error creating listing:", err);
+            req.flash("error", "Failed to create new listing.");
             res.redirect("/listings/new");
         }
     },
@@ -85,15 +86,16 @@ module.exports = {
             const { id } = req.params;
             const listing = await Listing.findById(id);
             if (!listing) {
-                req.flash("error", "Listing you requested for does not exist!");
+                req.flash("error", "Listing not found!");
                 return res.redirect("/listings");
             }
             let originalImageUrl = listing.images.url;
             originalImageUrl = originalImageUrl.replace("/upload", "/upload/c_scale,h_250,w_370/");
             res.render("listings/editListing.ejs", { listing, originalImageUrl });
         } catch (err) {
-            console.error(err);
-            res.status(500).send("Internal Server Error");
+            console.error("Error rendering edit form:", err);
+            req.flash("error", "An error occurred while rendering the edit form.");
+            res.redirect("/listings");
         }
     },
 
@@ -110,8 +112,8 @@ module.exports = {
             req.flash("success", "Updated listing!");
             res.redirect(`/listings/${id}`);
         } catch (err) {
-            console.error(err);
-            req.flash("error", "Failed to update listing!");
+            console.error("Error updating listing:", err);
+            req.flash("error", "Failed to update listing.");
             res.redirect(`/listings/${id}/edit`);
         }
     },
@@ -123,8 +125,8 @@ module.exports = {
             req.flash("success", "Deleted listing!");
             res.redirect("/listings");
         } catch (err) {
-            console.error(err);
-            req.flash("error", "Failed to delete listing!");
+            console.error("Error deleting listing:", err);
+            req.flash("error", "Failed to delete listing.");
             res.redirect("/listings");
         }
     }
