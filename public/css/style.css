@@ -56,6 +56,10 @@ body {
     color: #222222 !important;
 }
 
+#navBrand{
+    text-decoration: none;
+}
+
 /* Footer Section */
 .f-info-links a {
     text-decoration: none;
