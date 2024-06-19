@@ -26,15 +26,38 @@ module.exports = {
 
     index: async (req, res) => {
         try {
-            let filter = req.query.category ? { category: req.query.category } : {}; 
-            const allListings = await Listing.find(filter);
+            let filter = req.query.category ? { category: req.query.category } : {};
+            let sortOption = {};
+    
+            switch (req.query.sort) {
+                case 'az':
+                    sortOption = { title: 1 }; // Sort A-Z by listing title
+                    break;
+                case 'za':
+                    sortOption = { title: -1 }; // Sort Z-A by listing title
+                    break;
+                case 'lowHigh':
+                    sortOption = { price: 1 }; // Sort by price low to high
+                    break;
+                case 'highLow':
+                    sortOption = { price: -1 }; // Sort by price high to low
+                    break;
+                case 'rating':
+                    sortOption = { rating: -1 }; // Sort by rating descending
+                    break;
+                default:
+                    // No sort or unrecognized value, default behavior (optional)
+                    break;
+            }
+    
+            const allListings = await Listing.find(filter).sort(sortOption);
             res.render("listings/index.ejs", { allListings });
         } catch (err) {
             console.error("Error fetching all listings:", err);
             req.flash("error", "An error occurred while fetching listings.");
             res.redirect("/listings");
         }
-    },
+    },    
 
     renderNewForm: (req, res) => {
         res.render("listings/addListing.ejs");

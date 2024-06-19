@@ -45,6 +45,40 @@
       margin-left: 6rem;
     }
 
+    .sort-options {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      font-size: 1rem; /* Match font size with other elements */
+    }
+
+    .sort-options label {
+      margin-right: 0.5rem;
+      font-weight: bold; /* Ensure label text is bold */
+    }
+
+    .sort-options select {
+      padding: 0.5rem;
+      font-size: 1rem; /* Match font size with other elements */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      outline: none; /* Remove default focus outline */
+      transition: border-color 0.15s ease-in-out; /* Add smooth transition for border color */
+    }
+    .sort-options select option:hover {
+      background-color: red; /* Red background on hover */
+      color: white; /* Change text color to white for better readability */
+    }
+
+    .sort-options select:focus,
+    .sort-options select:hover {
+      border-color: #fe424d; /* Change border color on focus and hover */
+    }
+
     .slider-button {
       position: absolute;
       top: 50%;
@@ -112,13 +146,28 @@
         <div><i class="fa-solid fa-ship"></i></div>
         <p>Boats</p>
       </div>
+      <div class="ms-auto sort-options">
+        <label for="sort">Sort by:</label>
+        <select id="sort" onchange="sortItems(this.value)">
+          <option value="">Sort By</option>
+          <option value="az">A-Z</option>
+          <option value="za">Z-A</option>
+          <option value="lowHigh">Price: Low to High</option>
+          <option value="highLow">Price: High to Low</option>
+          <option value="rating">Rating</option>
+        </select>
+      </div>
     </div>
     <!-- <button id="next-filter" class="slider-button bg-warning border rounded-5 d-lg-none">&gt;</button> -->
   </div>
 
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-2" id="listings">
     <% for(let list of allListings) { %>
-    <a href="/listings/<%= list.id %>" class="list-link category-listing" data-category="<%= list.category %>">
+    <a
+      href="/listings/<%= list.id %>"
+      class="list-link category-listing"
+      data-category="<%= list.category %>"
+    >
       <div class="card col listing-card">
         <img
           src="<%=list.images[0].url%>"
@@ -142,6 +191,11 @@
   </div>
 
   <script>
+    function sortItems(sortOption) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set("sort", sortOption);
+      window.location.href = currentUrl.toString();
+    }
     document.addEventListener("DOMContentLoaded", function () {
       let prevBtn = document.getElementById("prev-filter");
       let nextBtn = document.getElementById("next-filter");
@@ -156,7 +210,9 @@
 
           for (let i = 0; i < cards.length; i++) {
             let priceElement = cards[i].querySelector(".price");
-            let originalPrice = parseInt(priceElement.innerText.replace(/,/g, ''));
+            let originalPrice = parseInt(
+              priceElement.innerText.replace(/,/g, "")
+            );
             let newPrice = 0;
 
             if (taxSwitch.checked) {
@@ -179,7 +235,9 @@
       }
       if (filters) {
         filters.addEventListener("click", (event) => {
-          let category = event.target.closest(".filter").getAttribute("data-category");
+          let category = event.target
+            .closest(".filter")
+            .getAttribute("data-category");
           window.location.href = `/listings?category=${category}`;
         });
       }
@@ -191,7 +249,7 @@
           filters.scrollBy({
             top: 0,
             left: -scrollStep,
-            behavior: "smooth"
+            behavior: "smooth",
           });
         });
 
@@ -199,7 +257,7 @@
           filters.scrollBy({
             top: 0,
             left: scrollStep,
-            behavior: "smooth"
+            behavior: "smooth",
           });
         });
       }
